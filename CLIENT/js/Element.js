@@ -75,7 +75,6 @@ constructor(toile){
             //The element is arived at destination
             this.iLastDistance = null;
             this.oPosition = this.oDestination;
-            console.log(this.oPosition);
             this.oDestination = { iX : null, iY : null};
         } else{
             //Calc the new position of the element
