@@ -1,20 +1,42 @@
 module.exports.controller = function(app) {
-
+	Game = require('../models/jeu/Game.js');
+	game = new Game();
 	io = app.get('io');
     jwt = app.get('jwt');
+	xss = require('xss');
     //var userConnected = jwt.verify(req.token, "secret");
-        
+	var aPlayers = [];
+	
+	/**
+	 * 
+	 * Don't forget : io.to(socketid).emit('message', 'whatever');
+	 */
 	io.on('connection', function(socket) {
-		socket.emit('message', 'Vous êtes bien connecté ! hahahah !!!');
-		//http://stackoverflow.com/questions/10110411/node-js-socket-io-how-to-emit-to-a-particular-client
-		socket.on('send-new-message', function(data) 
-        {  console.log('New message ! ',data);
-		   message = 'hello';
-           socket.emit('nouveau-message', message);
-           socket.broadcast.emit('nouveau-message', message);
+		
+		socket.emit('message', 'Vous êtes bien connecté !');
+		
+		socket.on('ready', function(data) 
+        {  	game.addPlayer(socket.conn.id,data.sLogin);
+			socket.emit('message', 'Bienvenue ' +  data.sLogin);
+			res = {aPlayers : game.getPlayersWithoutId()};
+			socket.emit('infos-players',  res);
+            socket.broadcast.emit('infos-players',  res);
        });
-		
-		
+	   
+		socket.on('send-message', function(sMessage) 
+        {  	if(socket.conn.id in game.aPlayers){
+				res = {sLogin : xss(game.aPlayers[socket.conn.id].sLogin), sMessage : xss(sMessage) };
+				socket.emit('newmessage',  res);
+				socket.broadcast.emit('newmessage',  res);
+			}
+       });
+	   
+	   socket.on('disconnect', function() {
+		  game.subPlayer(socket.conn.id);
+		  res = {aPlayers : game.getPlayersWithoutId()};
+          socket.broadcast.emit('infos-players',  res);
+	   });
+	   
 	});
 
 };

@@ -4,7 +4,10 @@ module.exports.controller = function(app) {
         jwt = app.get('jwt');
         //var userConnected = jwt.verify(req.token, "secret");
         
-	io.on('connection', function(socket) {
+	/*io.on('connection', function(socket) {
+		console.log('chat');
+		socket.emit('message', 'Chat !');
+		
 		//http://stackoverflow.com/questions/10110411/node-js-socket-io-how-to-emit-to-a-particular-client
 		socket.on('send-new-message', function(data) 
                 {
@@ -19,6 +22,6 @@ module.exports.controller = function(app) {
                 });
 		
 		
-	});
+	});*/
 
 };
