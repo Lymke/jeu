@@ -48,22 +48,17 @@ constructor(oToile){
         this.oToile.context.strokeStyle = this.sColorRoute; // Definition de la couleur de remplissage
         this.oToile.context.stroke();
     };
-    
-    this.setMyPersonnage = function(){
-        this.oMyPersonnage = new Personnage(this.oToile).setCoord(75, 220).setDim(10, 10).setVitesse(2).setColor("#00A8E0");
-        return this;
-    };
-    
+        
     this.init = function(){
         
         this.oConvoi = new Convoi(this.oToile).setCoord(this.oRoute.oOrigineConvoi.iX, this.oRoute.oOrigineConvoi.iY)
                                            .setDim(50, 20)
                                            .setColor("#D1D479")
-                                           .setVitesse(4);
+                                           .setVitesse(1);
                                    
         this.oBase1 = new Element(this.oToile).setCoord(0, 200).setDim(50, 100).setVitesse(100).setColor("olivedrab");                           
         this.oBase2 = new Element(this.oToile).setCoord(950, 200).setDim(50, 100).setVitesse(100).setColor("#FF0000");
-        this.setMyPersonnage();
+        this.oMyPersonnage = new Personnage(this.oToile).setCoord(75, 220).setDim(10, 10).setVitesse(6).setColor("#00A8E0");
         return this;
     };
     

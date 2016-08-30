@@ -2,6 +2,7 @@
     
     var canvas = document.getElementById("mon_canvas");
     var ctx = canvas.getContext("2d");
+    canvas.onselectstart = function () { return false; }//prevent double-click
     
     /**
      * Add the click event to the canvas object
