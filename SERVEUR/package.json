@@ -1,0 +1,21 @@
+{
+  "name": "Scrumserver",
+  "description": "Scrumapp",
+  "version": "0.1.0",
+  "dependencies": 
+  {
+    "express": "*",
+    "body-parser": "*",
+    "http": "*",
+    "path": "*",
+    "fs": "*",
+    "colors": "*",
+    "sequelize": "*",
+    "mysql": "*",
+    "bcrypt-nodejs": "*",
+    "express-session":"*",
+    "express-jwt":"*",
+    "jsonwebtoken":"*",
+    "socket.io": "*"
+  }
+}
