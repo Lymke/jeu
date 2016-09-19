@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Jeu</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head> 
+    <body>
+        <div class="col-lg-12">
+            <div class="row well">
+                <div class="col-lg-12">
+                    <span id="headerLogin"></span>
+                </div>
+            </div>
+            <div class="row" id="formReady">
+                <div class="col-lg-4 col-lg-offset-4 text-center">
+                    <div class="form-group">
+                        <label for="sLogin">Saissisez votre login</label>
+                        <input type="text" class="form-control" id="sLogin" name="sLogin">
+                    </div>
+                    <button class="btn btn-primary" id="btn_ready">Je suis prêt !</button>
+                </div>
+            </div>
+
+            <div class="row" id="divGame">
+
+                <div class="col-lg-9 text-center">
+                    <div class="row">
+                        <canvas id="mon_canvas" width="1000" height="500"> 
+                            Texte alternatif pour les navigateurs ne supportant pas Canvas.
+                        </canvas>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg12 text-center">
+                            <button id="btnNextFrame">Frame suivante</button> | 
+                            <button id="btnPlay"> Play</button> | 
+                            <button id="btnPause"> Pause</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3" style="border-left:2px solid #000;">
+                    <div class="text-center" style="padding-top : 15px;height:50px;background:#000;color:#fff;">
+                        Discussion
+                    </div>
+                    <div style="height:400px;padding-top:10px;max-height:400px; overflow-y: scroll; overflow-x: none;" id='chat'>
+                    </div>
+                    <div style="height:50px;border-top : 2px solid #333;padding-top:5px;">
+                        <textarea id="sMessage" name="sMessage" style="resize: none;height:100%;width:100%;"></textarea>
+                    </div>
+                    <div style="height:50px;padding-top:5px;">
+                        <button id="send" style="width:100%;" class="btn btn-primary">Envoyer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script>
+            $(function () {
+                var socket = io.connect('http://localhost:8080');
+
+                socket.on('infos-players', function (data) {
+                    //$('#infosPlayers').html('Joueurs présents ('+data.aPlayers.length+') : ' + data.aPlayers.toString());
+                });
+
+                socket.on('newmessage', function (data) {
+                    $('#chat').append('<p style="word-wrap: break-word;border-bottom:1px solid #EBEFF0;padding-bottom:5px;"><span style=\'font-weight:bold;\'>' + data.sLogin + ' : </span>' + data.sMessage + '</p>');
+                    //$('#infosPlayers').html('Joueurs présents ('+data.aPlayers.length+') : ' + data.aPlayers.toString());
+                });
+                
+                
+                socket.on('initgame', function (data) {
+                    console.log('initgame',data);
+                });
+
+                $('#send').click(function () {
+                    socket.emit('send-message', $('#sMessage').val());
+                    $('#sMessage').val('');
+                });
+
+                $('#btn_ready').click(function () {
+                    var sLogin =  $('#sLogin').val();
+                    socket.emit('ready', {sLogin:sLogin});
+                    $('#divGame').show();
+                    $('#formReady').hide();
+                    $('#headerLogin').html(sLogin);
+                });
+            });
+        </script>
+        <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript" src="js/Element.js"></script>
+        <script type="text/javascript" src="js/Toile.js"></script>
+        <script type="text/javascript" src="js/Carte.js"></script>
+        <script type="text/javascript" src="js/Convoi.js"></script>
+        <script type="text/javascript" src="js/Coordinates.js"></script>
+        <script type="text/javascript" src="js/Personnage.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    </body>
+</html>
