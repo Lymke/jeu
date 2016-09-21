@@ -42,7 +42,9 @@ module.exports.controller = function (app) {
         });
 
         socket.on('disconnect', function () {
+            console.log(socket.conn.id + ' has disconnected');
             game.subPlayer(socket.conn.id);
+            console.log("Vous etes maintenant " + game.oListPlayers.count());
             res = {aPlayers: game.getPlayersWithoutId()};
             socket.broadcast.emit('infos-players', res);
         });

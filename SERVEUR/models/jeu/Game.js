@@ -1,19 +1,22 @@
 Player = require('./Player.js');
+ListOfPlayers = require('./ListOfPlayers.js');
 Map = require('./Map.js');
 function Game() {
-    this.aPlayers = [];
+    this.oListPlayers = new ListOfPlayers();
     this.iMaxPlayers = 2;
 
     this.oMap;
 
     this.addPlayer = function (iIdSocket, sLogin) {
-        this.aPlayers[iIdSocket] = new Player(sLogin);
+        var oPlayer = new Player(sLogin);
+        oPlayer.iIdSocket = iIdSocket;
+        this.oListPlayers.addPlayer(oPlayer);
+        console.log('Game.addPLayer',this.oListPlayers);
     };
 
     this.subPlayer = function (iIdSocket) {
-        if (iIdSocket in this.aPlayers) {
-            delete this.aPlayers[iIdSocket];
-        }
+        this.oListPlayers.subPlayer(iIdSocket);
+        console.log('Game.subPLayer',this.oListPlayers);
     };
 
     /**
@@ -21,8 +24,8 @@ function Game() {
      */
     this.getPlayersWithoutId = function () {
         data = [];
-        for (p in this.aPlayers) {
-            data.push(this.aPlayers[p].sLogin);
+        for (p in this.oListPlayers) {
+            data.push(this.oListPlayers[p].sLogin);
         }
         return data;
     };
@@ -32,11 +35,11 @@ function Game() {
      * @returns {undefined}
      */
     this.dividePlayers = function () {
-        for (p in this.aPlayers) {
-            if (count(this.oMap.aPlayersBlueSide) < this.iMaxPlayers / 2) {
-                this.oMap.addPlayerBueSide(this.aPlayers[p]);
+        for (p in this.oListPlayers.aPlayers) {
+            if (this.oMap.oListPlayersBlueSide.count() < this.iMaxPlayers / 2) {
+                this.oMap.addPlayerBueSide(this.oListPlayers.aPlayers[p]);
             } else {
-                this.oMap.addPlayerRedSide(this.aPlayers[p]);
+                this.oMap.addPlayerRedSide(this.oListPlayers.aPlayers[p]);
             }
         }
     };
@@ -47,14 +50,15 @@ function Game() {
      * @returns {undefined}
      */
     this.isReady = function () {
-        return (count(this.aPlayers) == this.iMaxPlayers);
+        console.log("Nombre de joueurs : " + this.oListPlayers.count() + " ; max " + this.iMaxPlayers);
+        return (this.oListPlayers.count() == this.iMaxPlayers);
     };
 
     this.start = function () {
         this.oMap = new Map();
         this.dividePlayers();
         this.oMap.init();
-    }
+    };
 
 }
 module.exports = Game;
