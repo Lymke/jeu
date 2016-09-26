@@ -1,17 +1,21 @@
 function Element() { 
-    this.sName = "Element";    
+    this.sName;    
     this.oPosition = {};//type Coordinates
     this.oDestination = {iX : null, iY : null};//type Coordinates
     this.iWidth;
     this.iHeight;
     this.sColor;
-    this.fVitesse;
+    this.fSpeed;
     this.iAngle;
     this.iLastDistance = null;
     
     ///////////////// GETTER & SETTER
     
-    this.setCoord = function(iX, iY){
+    this.setCoord = function(oCoord){
+        this.oPosition = oCoord;
+        return this;
+    };
+    this.setCoordXY = function(iX, iY){
         this.oPosition.iX = iX;
         this.oPosition.iY = iY;
         return this;
@@ -28,8 +32,13 @@ function Element() {
         return this;
     };
 
-     this.setVitesse = function(fVitesse){
-        this.fVitesse = fVitesse;
+     this.setVitesse = function(fSpeed){
+        this.fSpeed = fSpeed;
+        return this;
+    };
+
+    this.setName = function(sName){
+        this.sName = sName;
         return this;
     };
 
@@ -53,6 +62,7 @@ function Element() {
         this.iLastDistance = null;
         this.oDestination = oDestination;
         this.iAngle = calcAngle( this.oPosition, this.oDestination);
+        return this;
     };
     
     /**
@@ -74,10 +84,23 @@ function Element() {
         } else{
             //Calc the new position of the element
             this.iLastDistance = iDistance;
-            this.oPosition = calcDeplacement(this.fVitesse, this.oPosition,this.iAngle);
+            this.oPosition = calcDeplacement(this.fSpeed, this.oPosition,this.iAngle);
        }
        
        return this;
     };
+    
+     this.getInfos = function(){
+            return {
+                    sName : this.sName,  
+                    oPosition : this.oPosition,
+                    oDestination : this.oDestination,
+                    iWidth : this.iWidth,
+                    iHeight : this.iHeight,
+                    sColor : this.sColor,
+                    fSpeed : this.fSpeed,
+                    iAngle : this.iAngle
+                };
+        };
 }
 module.exports = Element;

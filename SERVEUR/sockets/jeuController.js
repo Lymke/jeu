@@ -1,11 +1,15 @@
 module.exports.controller = function (app) {
-    Game = require('../models/jeu/Game.js');
-    game = new Game();
+    
     io = app.get('io');
     jwt = app.get('jwt');
     xss = require('xss');
-    //var userConnected = jwt.verify(req.token, "secret");
-    var aPlayers = [];
+    //var tickrate = 40/1000;
+
+
+    //Init the Map
+    Map = require('../models/jeu/Map.js');
+    var oMap = new Map().init();
+
 
     /**
      * 
@@ -14,41 +18,38 @@ module.exports.controller = function (app) {
     io.on('connection', function (socket) {
 
         socket.emit('message', 'Vous êtes bien connecté !');
-
-        socket.on('ready', function (data)
-        {
-            game.addPlayer(socket.conn.id, data.sLogin);
-            socket.emit('message', 'Bienvenue ' + data.sLogin);
-            res = {aPlayers: game.getPlayersWithoutId()};
-            socket.emit('infos-players', res);
-            socket.broadcast.emit('infos-players', res);
-            
-            //If the game is ready to play, we can begin
-            if(game.isReady()){
-                game.start();
-            }
-            
-            
-            
-        });
-
-        socket.on('send-message', function (sMessage)
-        {
-            if (socket.conn.id in game.aPlayers) {
-                res = {sLogin: xss(game.aPlayers[socket.conn.id].sLogin), sMessage: xss(sMessage)};
-                socket.emit('newmessage', res);
-                socket.broadcast.emit('newmessage', res);
+        
+        socket.on('player-add', function (data){
+            if(oMap.isComplete()){
+                socket.emit('message', 'La partie est complète');
+            }else{
+                oPlayer = oMap.createPLayer(socket.conn.id, data.sLogin);
+                oMap.addPlayer(oPlayer);
+                
+                oDatas = oMap.getPublicInfos();
+                oDatas.oMe = oPlayer.getPublicInfos();
+                
+                socket.emit('game-init', oDatas);
+                socket.broadcast.emit('game-newplayer',oPlayer.getPublicInfos());
+                
+                if(oMap.isReady()){
+                    socket.emit('game-start');
+                    socket.broadcast.emit('game-start');
+                }
             }
         });
-
+        
+        socket.on('game-moveto', function (oCoords){
+            oPlayer = oMap.click(socket.conn.id,oCoords);
+            
+            //For now we calc in client side too, it could be better to send the already calced infos
+            socket.emit('game-playermove', {'oCoords' : oCoords, 'iId' : oPlayer.iId});
+        });
+        
         socket.on('disconnect', function () {
-            console.log(socket.conn.id + ' has disconnected');
-            game.subPlayer(socket.conn.id);
-            console.log("Vous etes maintenant " + game.oListPlayers.count());
-            res = {aPlayers: game.getPlayersWithoutId()};
-            socket.broadcast.emit('infos-players', res);
+            iId = oMap.subPlayer(socket.conn.id);
+            socket.broadcast.emit('game-subplayer', iId);
         });
-
     });
 
 };

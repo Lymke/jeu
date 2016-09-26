@@ -19,10 +19,11 @@ function ListOfPlayers(sLogin) {
         };
         
         this.subPlayer = function(iIdSocket){
-            console.log('List sub ' + iIdSocket);
             for (p in this.aPlayers) {
                 if(this.aPlayers[p].iIdSocket == iIdSocket){
-                    this.aPlayers.splice(p,1) 
+                    iId = this.aPlayers[p].iId;
+                    this.aPlayers.splice(p,1);
+                    return iId;
                 }
             }
         };
