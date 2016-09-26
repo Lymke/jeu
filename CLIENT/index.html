@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="row" id="divGame" style="display:none;">
+            <div class="row" id="divGame">
 
                 <div class="col-lg-9 text-center">
                     <div class="row">
@@ -68,9 +68,13 @@
                 });
 
                 socket.on('newmessage', function (data) {
-                    console.log(data);
                     $('#chat').append('<p style="word-wrap: break-word;border-bottom:1px solid #EBEFF0;padding-bottom:5px;"><span style=\'font-weight:bold;\'>' + data.sLogin + ' : </span>' + data.sMessage + '</p>');
                     //$('#infosPlayers').html('Joueurs présents ('+data.aPlayers.length+') : ' + data.aPlayers.toString());
+                });
+                
+                
+                socket.on('initgame', function (data) {
+                    console.log('initgame',data);
                 });
 
                 $('#send').click(function () {
