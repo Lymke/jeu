@@ -54,7 +54,6 @@ function Map(oToile){
         }
         
         this.oMe.oPersonnage.draw();
-
         return this;  
     };
 
@@ -76,7 +75,7 @@ function Map(oToile){
             this.oListOfPlayers.aPlayers[p].oPersonnage.move();
         }
         //this.oMe.oPersonnage.move(this.iFps);
-        this.oMe.oPersonnage.move(this.iFps);
+        this.oMe.oPersonnage.move();
     };
     
     this.animate = function(){
@@ -110,7 +109,7 @@ function Map(oToile){
                 this.oListOfPlayers.addPlayer(oPlayer);
             }
         }
-        
+
         return this;
     };
     

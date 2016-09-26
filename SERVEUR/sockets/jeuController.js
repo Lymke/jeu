@@ -40,10 +40,10 @@ module.exports.controller = function (app) {
         });
         
         socket.on('game-moveto', function (oCoords){
-            oPlayer = oMap.click(socket.conn.id,oCoords);
+            oPlayer = oMap.click(socket.conn.id, oCoords);
             
             //For now we calc in client side too, it could be better to send the already calced infos
-            socket.emit('game-playermove', {'oCoords' : oCoords, 'iId' : oPlayer.iId});
+            //socket.broadcast.emit('game-playermove', {oCoords : oCoords, iId : oPlayer.iId});
         });
         
         socket.on('disconnect', function () {

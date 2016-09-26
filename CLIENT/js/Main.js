@@ -99,7 +99,7 @@ $(function () {
     function clickCanvas(event) {
         oCoords = canvas.relMouseCoords(event);
         oMap.click(oCoords);
-        socket.emit('game-click', oCoords);
+        socket.emit('game-moveto', oCoords);
     }
     canvas.addEventListener("click", clickCanvas);
     

@@ -1,3 +1,4 @@
+Distance = require('./Distance.js');
 function Element() { 
     this.sName;    
     this.oPosition = {};//type Coordinates
@@ -46,11 +47,11 @@ function Element() {
 
 
     this.distanceElement = function(elmt2){
-        return distance(this.oPosition.iX, this.oPosition.iY, elmt2.oPosition.iX, elmt2.oPosition.iY);
+        return Distance.distance(this.oPosition.iX, this.oPosition.iY, elmt2.oPosition.iX, elmt2.oPosition.iY);
     };
 
     this.distanceCoord = function(oCoordinates){
-        return distance(this.oPosition.iX, this.oPosition.iY, oCoordinates.iX, oCoordinates.iY);
+        return Distance.distance(this.oPosition.iX, this.oPosition.iY, oCoordinates.iX, oCoordinates.iY);
     };
     
     /**
@@ -61,7 +62,7 @@ function Element() {
     this.moveTo = function(oDestination){
         this.iLastDistance = null;
         this.oDestination = oDestination;
-        this.iAngle = calcAngle( this.oPosition, this.oDestination);
+        this.iAngle = Distance.calcAngle( this.oPosition, this.oDestination);
         return this;
     };
     
@@ -84,7 +85,7 @@ function Element() {
         } else{
             //Calc the new position of the element
             this.iLastDistance = iDistance;
-            this.oPosition = calcDeplacement(this.fSpeed, this.oPosition,this.iAngle);
+            this.oPosition = Distance.calcDeplacement(this.fSpeed, this.oPosition,this.iAngle);
        }
        
        return this;

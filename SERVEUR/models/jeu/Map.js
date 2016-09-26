@@ -65,10 +65,11 @@ function Map() {
         
         
         this.click = function(iIdSocket, oCoords){
-            for (p in this.aPlayers) {
-                if(this.aPlayers[p].iIdSocket == iIdSocket){
-                    this.aPlayers[p].oPersonnage.moveTo(oCoords);
-                    return this.aPlayers[p];
+            
+            for (p in this.oListOfPlayers.aPlayers) {
+                if(this.oListOfPlayers.aPlayers[p].iIdSocket == iIdSocket){
+                    this.oListOfPlayers.aPlayers[p].oPersonnage.moveTo(oCoords);
+                    return this.oListOfPlayers.aPlayers[p];
                 }
             }
         };

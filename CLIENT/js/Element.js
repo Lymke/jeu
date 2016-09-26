@@ -64,6 +64,7 @@ function Element(oToile){
         this.iAngle = calcAngle( this.oPosition, this.oDestination);
         this.iTimestamp = new Date().getTime();
         this.iTimestampStartMove = new Date().getTime();
+        
     };
     
     /**
