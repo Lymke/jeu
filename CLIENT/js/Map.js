@@ -1,30 +1,24 @@
-class Carte{
-constructor(oToile){
-    
-    this.oToile = oToile;
-    this.oMyPersonnage;
-    this.oConvoi;
-    this.oBase1;
-    this.oBase2;
-    this.iDistMinForMoveConvoi = 100;
-    
-    this.oRoute = {
-        oStart : {iX : 100, iY : 250},
-        oEnd : {iX : 900, iY : 250},
-        aCoordinates : [],
-        oOrigineConvoi : {iX : 475, iY : 240}
-        
-    };//Route is an array of coordinates
-    
-    this.sColorRoute = "#333";
+function Map(oToile){
 
-    ///////////////// GETTER & SETTER
-    
-    this.setRoute = function(aRoute){
-        this.aRoute = aRoute;
+    this.oToile = oToile;
+    this.iFps;
+    this.oMe;
+    this.oListOfPlayers= new ListOfPlayers();
+    this.oBaseBlueSide;
+    this.oBaseRedSide;
+    this.oConvoi;
+
+    this.setFps = function(iFps){
+        this.iFps = iFps;
+        return this;
     };
-    
-    ///////////////// FUNCTIONS
+
+
+//////////////////////////////// DRAW
+     /**
+     * 
+     * @returns {Map}
+     */
     this.drawCadre = function(){
         this.oToile.context.beginPath();
         this.oToile.context.lineWidth= 6;
@@ -34,6 +28,10 @@ constructor(oToile){
         return this;
     };
     
+     /**
+     * 
+     * @returns {Map}
+     */
     this.drawRoute = function(){
         this.oToile.context.beginPath(); // Debut du chemin
         this.oToile.context.lineWidth= 1;
@@ -47,55 +45,88 @@ constructor(oToile){
         this.oToile.context.closePath(); // Fermeture du chemin
         this.oToile.context.strokeStyle = this.sColorRoute; // Definition de la couleur de remplissage
         this.oToile.context.stroke();
-    };
-        
-    this.init = function(){
-        
-        this.oConvoi = new Convoi(this.oToile).setCoord(this.oRoute.oOrigineConvoi.iX, this.oRoute.oOrigineConvoi.iY)
-                                           .setDim(50, 20)
-                                           .setColor("#D1D479")
-                                           .setVitesse(1);
-                                   
-        this.oBase1 = new Element(this.oToile).setCoord(0, 200).setDim(50, 100).setVitesse(100).setColor("olivedrab");                           
-        this.oBase2 = new Element(this.oToile).setCoord(950, 200).setDim(50, 100).setVitesse(100).setColor("#FF0000");
-        this.oMyPersonnage = new Personnage(this.oToile).setCoord(75, 220).setDim(10, 10).setVitesse(6).setColor("#00A8E0");
         return this;
     };
     
-    
-    this.moveConvoi = function(){
-        if (this.oConvoi.distanceElement(this.oMyPersonnage) < this.iDistMinForMoveConvoi) {
-            if (this.oConvoi.iDirection == 1) {
-                if (this.oConvoi.oPosition.iX < 850) {
-                    this.oConvoi.oPosition.iX += this.oConvoi.fVitesse;
-                } else {
-                    this.oConvoi.iDirection = 0;
-                }
-
-            } else {
-
-                if (this.oConvoi.oPosition.iX > 100) {
-                    this.oConvoi.oPosition.iX -= this.oConvoi.fVitesse;
-                } else {
-                    this.oConvoi.iDirection  = 1;
-                }
-            }
+    this.drawPlayers = function(){
+        for(p in this.oListOfPlayers.aPlayers){
+            this.oListOfPlayers.aPlayers[p].oPersonnage.draw();
         }
-        return this.oConvoi;
+        
+        this.oMe.oPersonnage.draw();
+
+        return this;  
+    };
+
+    this.draw = function(){
+       this.oToile.clear();
+       this.drawCadre();
+       this.drawRoute();
+       this.oBlueSideBase.draw();
+       this.oRedSideBase.draw();
+       this.oConvoi.draw();
+       this.drawPlayers();
     };
     
-    this.click = function(coords){
-        this.oMyPersonnage.moveTo(coords);
-    }
+    
+//////////////////////////////// ANIMATE (move, click...)   
+    
+    this.animatePlayers = function(){
+        for(p in this.oListOfPlayers.aPlayers){
+            this.oListOfPlayers.aPlayers[p].oPersonnage.move();
+        }
+        //this.oMe.oPersonnage.move(this.iFps);
+        this.oMe.oPersonnage.move(this.iFps);
+    };
     
     this.animate = function(){
-        this.oToile.clear();
-        this.drawCadre().drawRoute();
-        this.oConvoi.draw();
-        this.oBase1.draw();
-        this.oBase2.draw();
-        this.oMyPersonnage.move().draw();
-        this.moveConvoi().draw();
-    }
-}
+        this.animatePlayers();
+        this.draw();
+    };
+    
+    this.click = function(oCoords){
+        this.oMe.oPersonnage.moveTo(oCoords);
+    };
+    
+    this.playerMove = function(oDatasPlayer){
+        for(p in this.oListOfPlayers.aPlayers){
+            if( this.oListOfPlayers.aPlayers[p].iId == oDatasPlayer.iId){
+                this.oListOfPlayers.aPlayers[p].oPersonnage.moveTo(oDatasPlayer.oCoords);
+            };
+        }
+    };
+    
+    this.initPlayers = function(oDatas){
+        
+        //Me
+        this.oMe = new Player().init(oDatas.oMe);
+        this.oMe.setPersonnage(new Personnage(oToile).init(oDatas.oMe.oPersonnage));
+        
+        //Players in the game
+        for (p in oDatas.aPlayers) {
+            if(oDatas.aPlayers[p].iId != this.oMe.iId){
+                oPlayer = new Player().init(oDatas.aPlayers[p]);
+                oPlayer.setPersonnage(new Personnage(oToile).init(oDatas.aPlayers[p].oPersonnage));
+                this.oListOfPlayers.addPlayer(oPlayer);
+            }
+        }
+        
+        return this;
+    };
+    
+    this.init = function(oParams){
+        
+        //Route & convoi
+        this.oRoute = oParams.oRoute;
+        this.oConvoi = new Convoi(this.oToile).init(oParams);
+ 
+        //BlueSide
+        this.oBlueSideBase = new Base(this.oToile).init(oParams.oBlueSideBase);
+        this.oRedSideBase = new Base(this.oToile).init(oParams.oRedSideBase);
+        
+        //Players
+        this.initPlayers(oParams);
+
+        return this;
+    };
 }

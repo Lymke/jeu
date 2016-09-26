@@ -21,7 +21,7 @@
                         <label for="sLogin">Saissisez votre login</label>
                         <input type="text" class="form-control" id="sLogin" name="sLogin">
                     </div>
-                    <button class="btn btn-primary" id="btn_ready">Je suis prêt !</button>
+                    <button class="btn btn-primary" id="btn_ready">Jouer !</button>
                 </div>
             </div>
 
@@ -42,62 +42,21 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3" style="border-left:2px solid #000;">
-                    <div class="text-center" style="padding-top : 15px;height:50px;background:#000;color:#fff;">
-                        Discussion
-                    </div>
-                    <div style="height:400px;padding-top:10px;max-height:400px; overflow-y: scroll; overflow-x: none;" id='chat'>
-                    </div>
-                    <div style="height:50px;border-top : 2px solid #333;padding-top:5px;">
-                        <textarea id="sMessage" name="sMessage" style="resize: none;height:100%;width:100%;"></textarea>
-                    </div>
-                    <div style="height:50px;padding-top:5px;">
-                        <button id="send" style="width:100%;" class="btn btn-primary">Envoyer</button>
-                    </div>
-                </div>
 
             </div>
         </div>
+        
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-        <script>
-            $(function () {
-                var socket = io.connect('http://localhost:8080');
-
-                socket.on('infos-players', function (data) {
-                    //$('#infosPlayers').html('Joueurs présents ('+data.aPlayers.length+') : ' + data.aPlayers.toString());
-                });
-
-                socket.on('newmessage', function (data) {
-                    $('#chat').append('<p style="word-wrap: break-word;border-bottom:1px solid #EBEFF0;padding-bottom:5px;"><span style=\'font-weight:bold;\'>' + data.sLogin + ' : </span>' + data.sMessage + '</p>');
-                    //$('#infosPlayers').html('Joueurs présents ('+data.aPlayers.length+') : ' + data.aPlayers.toString());
-                });
-                
-                
-                socket.on('initgame', function (data) {
-                    console.log('initgame',data);
-                });
-
-                $('#send').click(function () {
-                    socket.emit('send-message', $('#sMessage').val());
-                    $('#sMessage').val('');
-                });
-
-                $('#btn_ready').click(function () {
-                    var sLogin =  $('#sLogin').val();
-                    socket.emit('ready', {sLogin:sLogin});
-                    $('#divGame').show();
-                    $('#formReady').hide();
-                    $('#headerLogin').html(sLogin);
-                });
-            });
-        </script>
-        <script type="text/javascript" src="js/functions.js"></script>
-        <script type="text/javascript" src="js/Element.js"></script>
-        <script type="text/javascript" src="js/Toile.js"></script>
-        <script type="text/javascript" src="js/Carte.js"></script>
-        <script type="text/javascript" src="js/Convoi.js"></script>
-        <script type="text/javascript" src="js/Coordinates.js"></script>
-        <script type="text/javascript" src="js/Personnage.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/Toile.js"></script>
+        <script src="js/Map.js"></script>
+        <script src="js/Element.js"></script>
+        <script src="js/Personnage.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/ListOfPlayers.js"></script>
+        <script src="js/Base.js"></script>
+        <script src="js/Convoi.js"></script>
+        <script src="js/Main.js"></script>
+        
     </body>
 </html>

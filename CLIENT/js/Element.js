@@ -1,21 +1,25 @@
-class Element{
-constructor(toile){
+function Element(oToile){
     
-    this.oToile = toile;
+    this.oToile = oToile;
     this.oPosition = {};//type Coordinates
     this.oDestination = {iX : null, iY : null};//type Coordinates
     this.iWidth;
     this.iHeight;
     this.sColor;
-    this.fVitesse;
+    this.fSpeed;
     this.iAngle;
     this.iLastDistance = null;
     
     ///////////////// GETTER & SETTER
     
-    this.setCoord = function(iX, iY){
+    this.setCoordXY = function(iX, iY){
         this.oPosition.iX = iX;
         this.oPosition.iY = iY;
+        return this;
+    };
+    
+    this.setCoord = function(oCoordonnees){
+        this.oPosition = oCoordonnees;
         return this;
     };
 
@@ -30,8 +34,8 @@ constructor(toile){
         return this;
     };
 
-     this.setVitesse = function(fVitesse){
-        this.fVitesse = fVitesse;
+     this.setVitesse = function(fSpeed){
+        this.fSpeed = fSpeed;
         return this;
     };
 
@@ -58,6 +62,8 @@ constructor(toile){
         this.iLastDistance = null;
         this.oDestination = oDestination;
         this.iAngle = calcAngle( this.oPosition, this.oDestination);
+        this.iTimestamp = new Date().getTime();
+        this.iTimestampStartMove = new Date().getTime();
     };
     
     /**
@@ -76,13 +82,17 @@ constructor(toile){
             this.iLastDistance = null;
             this.oPosition = this.oDestination;
             this.oDestination = { iX : null, iY : null};
+            console.log('Temps', new Date().getTime() - this.iTimestampStartMove);
+
         } else{
             //Calc the new position of the element
             this.iLastDistance = iDistance;
-            this.oPosition = calcDeplacement(this.fVitesse, this.oPosition,this.iAngle);
+            iNow = new Date().getTime();
+            iTpsFromLastCall = iNow - this.iTimestamp;
+            this.oPosition = calcDeplacement((iTpsFromLastCall/1000) * this.fSpeed, this.oPosition,this.iAngle);
+            this.iTimestamp = iNow;
        }
        
        return this;
     };
-}
 }

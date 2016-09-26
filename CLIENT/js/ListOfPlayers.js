@@ -1,4 +1,4 @@
-function ListOfPlayers(sLogin) { 
+function ListOfPlayers() { 
 	this.aPlayers = [];
         
         /**
@@ -18,13 +18,11 @@ function ListOfPlayers(sLogin) {
             this.aPlayers.push(oPlayer);
         };
         
-        this.subPlayer = function(iIdSocket){
-            console.log('List sub ' + iIdSocket);
+        this.subPlayer = function(iIdPlayer){
             for (p in this.aPlayers) {
-                if(this.aPlayers[p].iIdSocket == iIdSocket){
+                if(this.aPlayers[p].iId == iIdPlayer){
                     this.aPlayers.splice(p,1) 
                 }
             }
         };
 };
-module.exports = ListOfPlayers;

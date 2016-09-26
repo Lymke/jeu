@@ -1,6 +1,17 @@
-function Player(sLogin) { 
+function Player() { 
+	this.iId;
 	this.sLogin = sLogin;
-	this.iIdSocket;
-	
+        this.oPersonnage = {};
+        
+        this.init = function(oParams){
+            this.iId = oParams.iId;
+            this.sLogin = oParams.sLogin;
+            return this;
+        };
+        
+        this.setPersonnage = function(oPersonnage){
+            this.oPersonnage = oPersonnage;
+            return this;
+        };
+        
 }
-module.exports = Player;
