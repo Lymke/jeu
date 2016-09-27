@@ -27,5 +27,13 @@ function ListOfPlayers(sLogin) {
                 }
             }
         };
+        
+        this.countBySide = function(){
+            aCount = [0,0];
+            for (p in this.aPlayers) {
+                aCount[this.aPlayers[p].iSide]++;
+            }
+            return aCount;
+        };
 };
 module.exports = ListOfPlayers;

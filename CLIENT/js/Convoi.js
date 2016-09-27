@@ -6,7 +6,7 @@ function Convoi(oToile) {
 
 
     this.init = function (oParams) {
-        this.setCoord(oParams.oRoute.oOrigineConvoi)
+        this.setCoord(oParams.oConvoi.oPosition)
             .setDim(oParams.oConvoi.iWidth, oParams.oConvoi.iHeight)
             .setVitesse(oParams.oConvoi.fSpeed)
             .setColor('#D1D479');//When there will be more type of convoi, adapt that

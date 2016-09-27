@@ -14,8 +14,7 @@ function Convoi() {
         return this.distanceElement(oElement) <= this.iDistanceMove;
     };
     
-   
-    
+
     this.getPublicInfos = function(){
         return {
             iWidth : this.iWidth,
@@ -23,6 +22,7 @@ function Convoi() {
             fSpeed : this.fSpeed,
             iDirection : this.iDirection,
             iAngle : this.iAngle,
+            oPosition : this.oPosition,
             oDestination : this.oDestination,
             iTimestamp :this.iTimestamp
       }; 

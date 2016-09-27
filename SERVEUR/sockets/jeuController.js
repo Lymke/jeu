@@ -48,7 +48,7 @@ module.exports.controller = function (app) {
                 if(oMap.isReady()){
                     socket.emit('game-start');
                     socket.broadcast.emit('game-start');
-                    setTimeout(animate, 3000);
+                    animate();
                 }
             }
         });

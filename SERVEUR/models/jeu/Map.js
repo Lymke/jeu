@@ -33,13 +33,16 @@ function Map() {
             oPlayer.iIdSocket = iIdSocket;
             oPlayer.sLogin = sLogin;
             
-            if(this.oListOfPlayers.count() < this.iMaxPlayers / 2){
+            aCount = this.oListOfPlayers.countBySide();
+
+            if(aCount[0] <= aCount[1] ){
                 oPlayer.iSide = 0;
                 oPlayer.oPersonnage = new Personnage().init('Azur').setCoordXY(75, 220);
             }else{
                 oPlayer.iSide = 1;
                 oPlayer.oPersonnage = new Personnage().init('Magenta').setCoordXY(925, 280);
             }
+            
             return oPlayer;
             
         };
@@ -124,24 +127,26 @@ function Map() {
             }
             
             //There is only 2 sides for the moment.
-            if(aCptSide[0] > aCptSide[1]){
+            //This code can be improved
+            if(this.oConvoi.iDirection != 1 && aCptSide[0] > aCptSide[1]){
                 this.oConvoi.iDirection = 1;
                 this.oConvoi.bStop = false;
-                this.oConvoi.moveTo(this.oRoute.oEnd).move();
-            }else if(aCptSide[0] == aCptSide[1]){
+                this.oConvoi.moveTo(this.oRoute.oEnd);
+            }else if(this.oConvoi.iDirection != null && aCptSide[0] == aCptSide[1]){
                 this.oConvoi.iDirection = null;
                 this.oConvoi.bStop = true;
-            }else{
+            }else if(this.oConvoi.iDirection != 0 && aCptSide[0] < aCptSide[1]){
                 this.oConvoi.iDirection = 0;
                 this.oConvoi.bStop = false;
-                this.oConvoi.moveTo(this.oRoute.oStart).move();
+                this.oConvoi.moveTo(this.oRoute.oStart);
             }
+            
+            this.oConvoi.move();
         };
         
         this.animate = function(){
             this.animatePlayers();
             this.animateConvoi();
-            
         };
         
         this.getDatasChanged = function(){

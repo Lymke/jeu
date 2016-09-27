@@ -96,6 +96,21 @@ function Map(oToile){
         }
     };
     
+///////////////////////////////////// CHANGE
+    this.changeConvoi = function(oDatasChanged){
+        
+        this.oConvoi.oPosition = oDatasChanged.oConvoi.oPosition;
+        this.oConvoi.moveTo(oDatasChanged.oConvoi.oDestination);
+        this.oConvoi.bStop = (oDatasChanged.oConvoi.iDirection == null);
+        /*this.oConvoi.iAngle = oDatasChanged.oConvoi.iAngle;
+        this.oConvoi.oDestination = oDatasChanged.oConvoi.oDestination;
+        this.oConvoi.oPosition = oDatasChanged.oConvoi.oPosition;
+        this.oConvoi.iDirection = oDatasChanged.oConvoi.iDirection;
+        this.oConvoi.iTimestamp = oDatasChanged.oConvoi.iTimestamp;
+        this.oConvoi.bStop = (this.oConvoi.iDirection == null);*/
+        
+    };
+///////////////////////////////////// INIT    
     this.initPlayers = function(oDatas){
         
         //Me
