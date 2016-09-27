@@ -13,6 +13,8 @@ function Map() {
         this.oListOfPlayers;
         this.oBlueSideBase;
         this.oRedSideBase;
+        this.oInfos;//
+        
         /**
          *  coordinates
          */
@@ -64,7 +66,7 @@ function Map() {
         };
         
         
-        this.click = function(iIdSocket, oCoords){
+        this.moveTo = function(iIdSocket, oCoords){
             
             for (p in this.oListOfPlayers.aPlayers) {
                 if(this.oListOfPlayers.aPlayers[p].iIdSocket == iIdSocket){
@@ -97,6 +99,66 @@ function Map() {
             return oDatas;
         };
         
+/////////////////////Animate
+        
+        this.animatePlayers = function(){
+            for(p in this.oListOfPlayers.aPlayers){
+                this.oListOfPlayers.aPlayers[p].oPersonnage.move();
+            } 
+        };
+        
+        this.animateConvoi = function(){
+            
+            aCptSide = [0,0];            
+            for(p in this.oListOfPlayers.aPlayers){
+                
+                if(this.oConvoi.isNear(this.oListOfPlayers.aPlayers[p].oPersonnage)){
+                    
+                    if(aCptSide[this.oListOfPlayers.aPlayers[p].iSide] == undefined){
+                        aCptSide[this.oListOfPlayers.aPlayers[p].iSide] = 0;
+                    }
+                    
+                    aCptSide[this.oListOfPlayers.aPlayers[p].iSide]++;
+                }
+                
+            }
+            
+            //There is only 2 sides for the moment.
+            if(aCptSide[0] > aCptSide[1]){
+                this.oConvoi.iDirection = 1;
+                this.oConvoi.bStop = false;
+                this.oConvoi.moveTo(this.oRoute.oEnd).move();
+            }else if(aCptSide[0] == aCptSide[1]){
+                this.oConvoi.iDirection = null;
+                this.oConvoi.bStop = true;
+            }else{
+                this.oConvoi.iDirection = 0;
+                this.oConvoi.bStop = false;
+                this.oConvoi.moveTo(this.oRoute.oStart).move();
+            }
+        };
+        
+        this.animate = function(){
+            this.animatePlayers();
+            this.animateConvoi();
+            
+        };
+        
+        this.getDatasChanged = function(){
+            oInfos = this.getPublicInfos();
+            oDatasChanged = {};
+            
+            //Convoi
+            if(this.oInfos.oConvoi.iDirection != oInfos.oConvoi.iDirection){
+                oDatasChanged.oConvoi = oInfos.oConvoi;
+            }
+            
+            this.oInfos = oInfos;
+            return oDatasChanged;
+        }
+        
+//////////////////INIT
+        
         this.init = function(){
             
             this.oListOfPlayers = new ListOfPlayers();
@@ -109,8 +171,9 @@ function Map() {
             this.oConvoi = new Convoi();
             this.oConvoi.setCoordXY(this.oRoute.oOrigineConvoi.iX, this.oRoute.oOrigineConvoi.iY)
                         .setDim(50, 20)
-                        .setVitesse(1); 
-                
+                        .setVitesse(45)
+                        .setDistanceMove(100); 
+            this.oInfos = this.getPublicInfos();    
             return this;
         };
 }

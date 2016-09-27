@@ -80,6 +80,7 @@ function Map(oToile){
     
     this.animate = function(){
         this.animatePlayers();
+        this.oConvoi.move();
         this.draw();
     };
     

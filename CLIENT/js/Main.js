@@ -95,6 +95,13 @@ $(function () {
         }
     });
     
+    //The game change
+     socket.on('game-change', function (oDatasChanged) {
+        oMap.oConvoi.iAngle = oDatasChanged.oConvoi.iAngle;
+        oMap.oConvoi.oDestination = oDatasChanged.oConvoi.oDestination;
+        oMap.oConvoi.iTimestamp = oDatasChanged.oConvoi.iTimestamp;
+    });
+    
     //Clic on the map
     function clickCanvas(event) {
         oCoords = canvas.relMouseCoords(event);

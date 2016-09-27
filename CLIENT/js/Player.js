@@ -1,6 +1,7 @@
 function Player() { 
 	this.iId;
 	this.sLogin = sLogin;
+        this.iSide;
         this.oPersonnage = {};
         
         this.init = function(oParams){

@@ -3,7 +3,8 @@ module.exports.controller = function (app) {
     io = app.get('io');
     jwt = app.get('jwt');
     xss = require('xss');
-    //var tickrate = 40/1000;
+    _und = require("underscore");
+    var tickrate = 40/1000;
 
 
     //Init the Map
@@ -18,6 +19,18 @@ module.exports.controller = function (app) {
     io.on('connection', function (socket) {
 
         socket.emit('message', 'Vous êtes bien connecté !');
+        
+        function animate(){
+            
+          oMap.animate();
+          
+          oDatasChanged = oMap.getDatasChanged();
+          if(!_und.isEmpty(oDatasChanged)){
+              socket.emit('game-change', oDatasChanged);
+              socket.broadcast.emit('game-change', oDatasChanged);
+          }
+          setTimeout(animate, tickrate);
+        };
         
         socket.on('player-add', function (data){
             if(oMap.isComplete()){
@@ -35,15 +48,16 @@ module.exports.controller = function (app) {
                 if(oMap.isReady()){
                     socket.emit('game-start');
                     socket.broadcast.emit('game-start');
+                    setTimeout(animate, 3000);
                 }
             }
         });
         
         socket.on('game-moveto', function (oCoords){
-            oPlayer = oMap.click(socket.conn.id, oCoords);
+            oPlayer = oMap.moveTo(socket.conn.id, oCoords);
             
             //For now we calc in client side too, it could be better to send the already calced infos
-            //socket.broadcast.emit('game-playermove', {oCoords : oCoords, iId : oPlayer.iId});
+            socket.broadcast.emit('game-playermove', {oCoords : oCoords, iId : oPlayer.iId});
         });
         
         socket.on('disconnect', function () {

@@ -83,7 +83,6 @@ function Element(oToile){
             this.iLastDistance = null;
             this.oPosition = this.oDestination;
             this.oDestination = { iX : null, iY : null};
-            console.log('Temps', new Date().getTime() - this.iTimestampStartMove);
 
         } else{
             //Calc the new position of the element
