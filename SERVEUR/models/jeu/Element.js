@@ -8,6 +8,8 @@ function Element() {
     this.sColor;
     this.fSpeed;
     this.iAngle;
+    this.iStartMoveTimestamp;
+    this.oStartMovePosition;
     this.iLastDistance = null;
     this.bStop = false;
     
@@ -64,8 +66,8 @@ function Element() {
         this.iLastDistance = null;
         this.oDestination = oDestination;
         this.iAngle = Distance.calcAngle( this.oPosition, this.oDestination);
-        this.iTimestamp = new Date().getTime();
-        this.iTimestampStartMove = new Date().getTime();
+        this.iStartMoveTimestamp = new Date().getTime();
+        this.oStartMovePosition = this.oPosition;
         return this;
         
     };
@@ -90,10 +92,8 @@ function Element() {
             } else {
                 //Calc the new position of the element
                 this.iLastDistance = iDistance;
-                iNow = new Date().getTime();
-                iTpsFromLastCall = iNow - this.iTimestamp;
-                this.oPosition = Distance.calcDeplacement((iTpsFromLastCall / 1000) * this.fSpeed, this.oPosition, this.iAngle);
-                this.iTimestamp = iNow;
+                iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
+                this.oPosition = Distance.calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
             }
         }
         return this;

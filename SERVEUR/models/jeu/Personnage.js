@@ -17,7 +17,11 @@ function Personnage() {
             iWidth: this.iWidth,
             iHeight: this.iHeight,
             fSpeed: this.fSpeed,
-            oPosition : this.oPosition
+            oPosition : this.oPosition,
+            oDestination : this.oDestination,
+            iAngle : this.iAngle,
+            iStartMoveTimestamp : this.iStartMoveTimestamp,
+            oStartMovePosition : this.oStartMovePosition
         };
     };
 };

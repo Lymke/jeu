@@ -7,7 +7,7 @@ function Map() {
 	
         this.iWidth = 1000;
         this.iHeight = 500;
-        this.iMaxPlayers = 2;
+        this.iMaxPlayers = 6;
         this.iMinPlayers = 1;
         this.iIdAutoIncrement = 0;
         this.oListOfPlayers;

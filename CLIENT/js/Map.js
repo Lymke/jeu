@@ -86,12 +86,15 @@ function Map(oToile){
     
     this.click = function(oCoords){
         this.oMe.oPersonnage.moveTo(oCoords);
+        
+        //Later, return the action 
     };
     
     this.playerMove = function(oDatasPlayer){
+        console.log()
         for(p in this.oListOfPlayers.aPlayers){
             if( this.oListOfPlayers.aPlayers[p].iId == oDatasPlayer.iId){
-                this.oListOfPlayers.aPlayers[p].oPersonnage.moveTo(oDatasPlayer.oCoords);
+                this.oListOfPlayers.aPlayers[p].oPersonnage.moveToDatasElement(oDatasPlayer.oPersonnage);
             };
         }
     };

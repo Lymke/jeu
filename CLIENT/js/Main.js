@@ -115,6 +115,13 @@ $(function () {
         }
     });
     
+    //I moved
+    socket.on('game-memove', function (oDatasPlayer) {
+        if(oMap.oMe != undefined){
+            oMap.oMe.oPersonnage.moveToDatasElement(oDatasPlayer.oPersonnage);
+        }
+    });
+    
     
     
 });
