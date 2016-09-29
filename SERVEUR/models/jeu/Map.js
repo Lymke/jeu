@@ -106,7 +106,9 @@ function Map() {
         
         this.animatePlayers = function(){
             for(p in this.oListOfPlayers.aPlayers){
-                this.oListOfPlayers.aPlayers[p].oPersonnage.move();
+                
+                oNewPosition = this.oListOfPlayers.aPlayers[p].oPersonnage.calcPositionMove();
+                this.oListOfPlayers.aPlayers[p].oPersonnage.move(oNewPosition);
             } 
         };
         
@@ -141,7 +143,7 @@ function Map() {
                 this.oConvoi.moveTo(this.oRoute.oStart);
             }
             
-            this.oConvoi.move();
+            this.oConvoi.move(this.oConvoi.calcPositionMove());
         };
         
         this.animate = function(){

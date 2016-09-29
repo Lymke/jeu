@@ -1,7 +1,7 @@
 Distance = require('./Distance.js');
 function Element() {
     this.sName;
-    this.oPosition = {};//type Coordinates
+    this.oPosition = {iX: null, iY: null};//type Coordinates
     this.oDestination = {iX: null, iY: null};//type Coordinates
     this.iWidth;
     this.iHeight;
@@ -73,30 +73,41 @@ function Element() {
     };
 
     /**
-     * Set the new position of the element
+     * Return the new position of the element after his move
      */
-    this.move = function () {
+    this.calcPositionMove = function () {
         if(!this.bStop){
             if (this.oDestination.iX == null) {
                 //there is no destination or position setted, we return this
-                return this;
+                return this.oPosition;
             }
 
             var iDistance = this.distanceCoord(this.oDestination);
             if (this.iLastDistance != null && iDistance > this.iLastDistance) {
                 //The element is arived at destination
                 this.iLastDistance = null;
-                this.oPosition = this.oDestination;
-                this.oDestination = {iX: null, iY: null};
+                oPositionRes = this.oDestination;
 
             } else {
                 //Calc the new position of the element
                 this.iLastDistance = iDistance;
                 iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
-                this.oPosition = Distance.calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
+                oPositionRes = Distance.calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
             }
         }
-        return this;
+        return oPositionRes;
+    };
+    
+    /**
+     * 
+     * @param {type} oPosition
+     * @returns {undefined}
+     */
+    this.move = function(oPosition){
+        this.oPosition = oPosition;
+        if(oPosition.iX == this.oDestination.iX  || oPosition.iY == this.oDestination.iY ){
+            this.oDestination = {iX: null, iY: null};
+        }
     };
 
     this.stop = function(bStop){

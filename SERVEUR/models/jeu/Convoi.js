@@ -4,7 +4,7 @@ function Convoi() {
     
     this.iDistanceMove;
     this.iDirection;
-    
+    this.sName = 'convoi';
     this.setDistanceMove = function(iDistanceMove){
         this.iDistanceMove = iDistanceMove;
         return this;  
