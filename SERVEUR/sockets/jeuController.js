@@ -36,9 +36,7 @@ module.exports.controller = function (app) {
             if(oMap.isComplete()){
                 socket.emit('message', 'La partie est complète');
             }else{
-                oPlayer = oMap.createPLayer(socket.conn.id, data.sLogin);
-                oMap.addPlayer(oPlayer);
-                
+                oPlayer = oMap.addPlayer(socket.conn.id, data.sLogin);
                 oDatas = oMap.getPublicInfos();
                 oDatas.oMe = oPlayer.getPublicInfos();
                 
@@ -46,9 +44,15 @@ module.exports.controller = function (app) {
                 socket.broadcast.emit('game-newplayer',oPlayer.getPublicInfos());
                 
                 if(oMap.isReady()){
-                    socket.emit('game-start');
-                    socket.broadcast.emit('game-start');
                     animate();
+                    socket.emit('game-start');
+                    if(!oMap.bHasStarted ){
+                        //the game begin so we call all players to say the game is starting
+                        socket.broadcast.emit('game-start');
+                    }
+                    
+                    //now the game has begun
+                    oMap.bHasStarted  = true;
                 }
             }
         });

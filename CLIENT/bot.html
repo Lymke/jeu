@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Jeu</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    </head> 
+    <body>
+        <h1>Bot</h1>
+        <button id="move">Move</button>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script language="javascript">
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('player-add', {sLogin:'yo!'});
+            
+            var oMe = null;
+            
+            socket.on('game-init', function (oDatas) {
+              console.log('game-init',oDatas);
+              oMe = oDatas.oMe;
+              //oDatas permit to create the map by drawing bases, players, convoi, route...
+            });
+            
+            
+            socket.on('game-start', function () {
+                console.log('game-start');
+                
+            });
+            $('#move').click(function(){
+                socket.emit('game-moveto', {iX : 100, iY : 100});
+            });
+        </script>
+    </body>
+</html>

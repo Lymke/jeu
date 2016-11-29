@@ -4,7 +4,7 @@ Player = require('./Player.js');
 ListOfPlayers = require('./ListOfPlayers.js');
 Personnage = require('./Personnage.js');
 function Map() { 
-	
+	this.bHasStarted = false;
         this.iWidth = 1000;
         this.iHeight = 500;
         this.iMaxPlayers = 6;
@@ -19,7 +19,6 @@ function Map() {
          *  coordinates
          */
         this.oRoute = {
-            sColor : "#333",
             oStart : {iX : 100, iY : 250},
             oEnd : {iX : 900, iY : 250},
             aCoordinates : [],
@@ -27,7 +26,16 @@ function Map() {
 
         };
         
-        this.createPLayer = function(iIdSocket,sLogin){
+        
+        this.isComplete = function(){
+            return this.oListOfPlayers.count() >= this.iMaxPlayers;
+        };
+        
+        this.isReady = function(){
+            return this.oListOfPlayers.count() >= this.iMinPlayers;
+        };
+        
+        this.addPlayer = function(iIdSocket,sLogin){
             oPlayer = new Player();
             oPlayer.iId = this.iIdAutoIncrement++;
             oPlayer.iIdSocket = iIdSocket;
@@ -42,21 +50,8 @@ function Map() {
                 oPlayer.iSide = 1;
                 oPlayer.oPersonnage = new Personnage().init('Magenta').setCoordXY(925, 280);
             }
-            
-            return oPlayer;
-            
-        };
-        
-        this.isComplete = function(){
-            return this.oListOfPlayers.count() >= this.iMaxPlayers;
-        };
-        
-        this.isReady = function(){
-            return this.oListOfPlayers.count() >= this.iMinPlayers;
-        };
-        
-        this.addPlayer = function(oPlayer){
             this.oListOfPlayers.addPlayer(oPlayer);
+            return oPlayer;
         };
         
         /**
