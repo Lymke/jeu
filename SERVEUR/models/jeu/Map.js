@@ -39,10 +39,10 @@ function Map() {
 
             if(aCount[0] <= aCount[1] ){
                 oPlayer.iSide = 0;
-                oPlayer.oPersonnage = new Personnage().init('Azur').setCoordXY(75, 220);
+                oPlayer.oPersonnage = new Personnage().init('Azur').setCoordXY(20, 30);
             }else{
                 oPlayer.iSide = 1;
-                oPlayer.oPersonnage = new Personnage().init('Magenta').setCoordXY(925, 280);
+                oPlayer.oPersonnage = new Personnage().init('Magenta').setCoordXY(180, 70);
             }
             this.oListOfPlayers.addPlayer(oPlayer);
             return oPlayer;

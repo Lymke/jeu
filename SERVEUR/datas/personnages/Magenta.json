@@ -2,6 +2,6 @@
     "sName" : "Magenta",
     "iWidth" : 10,
     "iHeight" : 10,
-    "fSpeed" : 100,
+    "fSpeed" : 10,
     "sColor" : "#FF00FF"
 }
