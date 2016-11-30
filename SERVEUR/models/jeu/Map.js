@@ -5,10 +5,10 @@ ListOfPlayers = require('./ListOfPlayers.js');
 Personnage = require('./Personnage.js');
 function Map() { 
 	this.bHasStarted = false;
-        this.iWidth = 1000;
-        this.iHeight = 500;
-        this.iMaxPlayers = 6;
-        this.iMinPlayers = 1;
+        this.iWidth;
+        this.iHeight;
+        this.iMaxPlayers;
+        this.iMinPlayers;
         this.iIdAutoIncrement = 0;
         this.oListOfPlayers;
         this.oBlueSideBase;
@@ -18,13 +18,7 @@ function Map() {
         /**
          *  coordinates
          */
-        this.oRoute = {
-            oStart : {iX : 100, iY : 250},
-            oEnd : {iX : 900, iY : 250},
-            aCoordinates : [],
-            oOrigineConvoi : {iX : 475, iY : 240}
-
-        };
+        this.oRoute;
         
         
         this.isComplete = function(){
@@ -187,20 +181,21 @@ this.verifyCollisionsPersonnage = function(oPersonnage,oNewPosition){
 
 //////////////////INIT
         
-        this.init = function(){
-            
+        this.init = function(sName){
+            oConfigMap = require('./../../datas/maps/' + sName + '.json');
             this.oListOfPlayers = new ListOfPlayers();
             
             //Bases
-            this.oBlueSideBase = new Base().setName('blue').setCoordXY(0, 200).setDim(50, 100);                           
-            this.oRedSideBase = new Base().setName('red').setCoordXY(950, 200).setDim(50, 100);
+            this.oBlueSideBase = new Base().init(oConfigMap.oBlueSideBase).setName('blue');                           
+            this.oRedSideBase = new Base().init(oConfigMap.oRedSideBase).setName('red');
             
             //Convoi
-            this.oConvoi = new Convoi();
-            this.oConvoi.setCoordXY(this.oRoute.oOrigineConvoi.iX, this.oRoute.oOrigineConvoi.iY)
-                        .setDim(50, 20)
-                        .setVitesse(45)
-                        .setDistanceMove(100); 
+            this.oConvoi = new Convoi().init(oConfigMap.sConvoi);
+            this.oConvoi.setCoordXY(oConfigMap.oRoute.oOrigineConvoi.iX, oConfigMap.oRoute.oOrigineConvoi.iY)
+            
+            //Route
+            this.oRoute =  oConfigMap.oRoute;
+            
             this.oInfos = this.getPublicInfos();    
             return this;
         };

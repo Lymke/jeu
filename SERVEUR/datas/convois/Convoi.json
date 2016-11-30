@@ -1,0 +1,7 @@
+{
+    "sName": "Convoi",
+    "iWidth": 40,
+    "iHeight": 20,
+    "fSpeed": 10,
+    "fDistanceMove": 30
+}

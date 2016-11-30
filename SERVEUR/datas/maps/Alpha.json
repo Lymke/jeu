@@ -1,0 +1,36 @@
+{
+    "sName": "Alpha",
+    "iWidth": 200,
+    "iHeight": 100,
+    "iIdAutoIncrement": 1,
+    "iMinPlayers": 1,
+    "iMaxPlayers": 6,
+    "oBlueSideBase": {
+        "iX": 5,
+        "iY": 50,
+        "iWidth": 10,
+        "iHeight": 20
+    },
+    "oRedSideBase": {
+        "iX": 195,
+        "iY": 50,
+        "iWidth": 10,
+        "iHeight": 20
+    },
+    "sConvoi": "Convoi",
+    "oRoute": {
+        "oStart": {
+            "iX": 20,
+            "iY": 50
+        },
+        "oEnd": {
+            "iX": 80,
+            "iY": 50
+        },
+        "aCoordinates": [],
+        "oOrigineConvoi": {
+            "iX": 100,
+            "iY": 50
+        }
+    }
+}

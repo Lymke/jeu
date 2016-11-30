@@ -10,8 +10,7 @@ module.exports.controller = function (app) {
 
     //Init the Map
     Map = require('../models/jeu/Map.js');
-    var oMap = new Map().init();
-
+    var oMap = new Map().init("Alpha");
 
     /**
      * 
