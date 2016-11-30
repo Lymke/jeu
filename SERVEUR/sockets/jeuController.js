@@ -4,7 +4,8 @@ module.exports.controller = function (app) {
     jwt = app.get('jwt');
     xss = require('xss');
     _und = require("underscore");
-    var tickrate = 40/1000;
+    //var tickrate = 40/1000;
+    var tickrate = 1000;
 
 
     //Init the Map

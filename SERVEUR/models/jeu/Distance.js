@@ -27,4 +27,14 @@ Distance.calcDeplacement = function (iV, oOrigine, fAngle) {
     };
 };
 
+Distance.testsCollisionElementCarre = function(oElementA, oElementB){
+    if((oElementB.oPosition.iX >= oElementA.oPosition.iX + oElementA.iWidth)      // trop à droite
+	|| (oElementB.oPosition.iX + oElementB.iWidth <= oElementA.oPosition.iX) // trop à gauche
+	|| (oElementB.oPosition.iY >= oElementA.oPosition.iY + oElementA.iHeight) // trop en bas
+	|| (oElementB.oPosition.iY + oElementB.iHeight <= oElementA.oPosition.iY))  // trop en haut
+          return false; 
+   else
+          return true; 
+};
+
 module.exports = Distance;

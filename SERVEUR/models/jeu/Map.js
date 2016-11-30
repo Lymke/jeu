@@ -101,9 +101,23 @@ function Map() {
         
         this.animatePlayers = function(){
             for(p in this.oListOfPlayers.aPlayers){
-                
+                console.log('Initial : ',this.oListOfPlayers.aPlayers[p].oPersonnage.oPosition);
+                console.log('Destination : ',this.oListOfPlayers.aPlayers[p].oPersonnage.oDestination);
                 oNewPosition = this.oListOfPlayers.aPlayers[p].oPersonnage.calcPositionMove();
-                this.oListOfPlayers.aPlayers[p].oPersonnage.move(oNewPosition);
+                console.log('New Position : ',oNewPosition);
+                
+                if(    !this.oListOfPlayers.aPlayers[p].oPersonnage.bStop 
+                    && !this.verifyCollisionsPersonnage(this.oListOfPlayers.aPlayers[p].oPersonnage,oNewPosition)){
+                    //the personnage is not in stop or in collision if he goes at this point
+                    this.oListOfPlayers.aPlayers[p].oPersonnage.move(oNewPosition);
+                }else{
+                    console.log('Colision',oNewPosition);
+                    //to keep the timers, stay at the actual position
+                    this.oListOfPlayers.aPlayers[p].oPersonnage.move(this.oListOfPlayers.aPlayers[p].oPersonnage.oPosition);
+                }
+                
+                console.log('Position : ',this.oListOfPlayers.aPlayers[p].oPersonnage.oPosition);
+                console.log('--------------------------------------');
             } 
         };
         
@@ -143,7 +157,7 @@ function Map() {
         
         this.animate = function(){
             this.animatePlayers();
-            this.animateConvoi();
+            //this.animateConvoi();
         };
         
         this.getDatasChanged = function(){
@@ -158,7 +172,19 @@ function Map() {
             this.oInfos = oInfos;
             return oDatasChanged;
         }
-        
+
+//////////////////COLISIONS
+
+this.verifyCollisionsPersonnage = function(oPersonnage,oNewPosition){
+    
+    //wtih the convoi
+    oPositionOrigin = oPersonnage.oPosition;
+    oPersonnage.oPosition = oNewPosition;
+    bRes = Distance.testsCollisionElementCarre(this.oConvoi,oPersonnage);
+    oPersonnage.oPosition = oPositionOrigin;
+    return bRes;
+}
+
 //////////////////INIT
         
         this.init = function(){

@@ -10,7 +10,7 @@
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script language="javascript">
             var socket = io.connect('http://localhost:8080');
-            socket.emit('player-add', {sLogin:'lala'});
+            socket.emit('player-add', {sLogin:'P-body'});
             
             socket.on('game-init', function (oDatas) {
               console.log('game-init',oDatas);
@@ -24,6 +24,8 @@
             socket.on('game-playermove', function (oDatasPlayer) {
                 console.log('game-playermove',oDatasPlayer);
             });
+            
+            
             
         </script>
     </body>

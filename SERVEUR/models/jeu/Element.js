@@ -83,9 +83,9 @@ function Element() {
             }
 
             var iDistance = this.distanceCoord(this.oDestination);
-            if (this.iLastDistance != null && iDistance > this.iLastDistance) {
+            
+            if (iDistance < this.fSpeed) {
                 //The element is arived at destination
-                this.iLastDistance = null;
                 oPositionRes = this.oDestination;
 
             } else {
@@ -105,6 +105,8 @@ function Element() {
      */
     this.move = function(oPosition){
         this.oPosition = oPosition;
+        this.oStartMovePosition = oPosition;
+        this.iStartMoveTimestamp = new Date().getTime();
         if(oPosition.iX == this.oDestination.iX  || oPosition.iY == this.oDestination.iY ){
             this.oDestination = {iX: null, iY: null};
         }
