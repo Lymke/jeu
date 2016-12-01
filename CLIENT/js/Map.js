@@ -27,6 +27,35 @@ function Map(oToile){
         this.oToile.context.stroke();
         return this;
     };
+     /**
+     * 
+     * @returns {Map}
+     */
+    this.drawGrid = function(){
+        var iStep = 10;
+        var sColor = "#eaecef";
+        for(var i = 0 ; i<= this.iWidth ; i += iStep){
+            this.oToile.context.beginPath();
+            this.oToile.context.lineWidth= 2;
+            this.oToile.context.strokeStyle=sColor;
+            this.oToile.context.moveTo(i, 0); // Le trace part du point 150,80
+            this.oToile.context.lineTo(i, this.iHeight); // Un segment est ajoute vers 300,230
+            this.oToile.context.closePath(); // Fermeture du chemin
+            this.oToile.context.stroke();
+        }
+        
+        for(var y = 0 ; y<= this.iHeight ; y += iStep){
+            this.oToile.context.beginPath();
+            this.oToile.context.lineWidth= 2;
+            this.oToile.context.strokeStyle=sColor;
+            this.oToile.context.moveTo(0, y); // Le trace part du point 150,80
+            this.oToile.context.lineTo(this.iWidth, y); // Un segment est ajoute vers 300,230
+            this.oToile.context.closePath(); // Fermeture du chemin
+            this.oToile.context.stroke();
+        }
+        
+        return this;
+    };
     
      /**
      * 
@@ -59,6 +88,7 @@ function Map(oToile){
 
     this.draw = function(){
        this.oToile.clear();
+       this.drawGrid();
        this.drawCadre();
        this.drawRoute();
        this.oBlueSideBase.draw();
