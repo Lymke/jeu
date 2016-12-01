@@ -7,6 +7,7 @@ function Map(oToile){
     this.oBaseBlueSide;
     this.oBaseRedSide;
     this.oConvoi;
+    this.bShowGrid = true;
 
     this.setFps = function(iFps){
         this.iFps = iFps;
@@ -88,7 +89,9 @@ function Map(oToile){
 
     this.draw = function(){
        this.oToile.clear();
-       this.drawGrid();
+       if(this.bShowGrid){
+           this.drawGrid();
+       }
        this.drawCadre();
        this.drawRoute();
        this.oBlueSideBase.draw();
