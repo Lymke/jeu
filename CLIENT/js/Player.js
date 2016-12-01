@@ -1,6 +1,6 @@
 function Player() { 
 	this.iId;
-	this.sLogin = sLogin;
+	this.sLogin;
         this.iSide;
         this.oPersonnage = {};
         

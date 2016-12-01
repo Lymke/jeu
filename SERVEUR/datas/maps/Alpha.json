@@ -2,7 +2,6 @@
     "sName": "Alpha",
     "iWidth": 200,
     "iHeight": 100,
-    "iIdAutoIncrement": 1,
     "iMinPlayers": 1,
     "iMaxPlayers": 6,
     "oBlueSideBase": {
@@ -24,7 +23,7 @@
             "iY": 50
         },
         "oEnd": {
-            "iX": 80,
+            "iX": 180,
             "iY": 50
         },
         "aCoordinates": [],

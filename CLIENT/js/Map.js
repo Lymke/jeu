@@ -21,9 +21,9 @@ function Map(oToile){
      */
     this.drawCadre = function(){
         this.oToile.context.beginPath();
-        this.oToile.context.lineWidth= 6;
+        this.oToile.context.lineWidth= 2;
         this.oToile.context.strokeStyle="#000";
-        this.oToile.context.rect(3,3,this.oToile.canvas.width - 6,this.oToile.canvas.height-6);//this.oToile.canvas.width,this.oToile.canvas.hight); 
+        this.oToile.context.rect(1,1,this.iWidth - 2,this.iHeight-2);//this.oToile.canvas.width,this.oToile.canvas.hight); 
         this.oToile.context.stroke();
         return this;
     };
@@ -133,6 +133,10 @@ function Map(oToile){
     };
     
     this.init = function(oParams){
+        
+        //Map
+        this.iWidth = oParams.oMap.iWidth;
+        this.iHeight = oParams.oMap.iHeight;
         
         //Route & convoi
         this.oRoute = oParams.oRoute;

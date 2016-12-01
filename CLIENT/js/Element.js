@@ -45,7 +45,7 @@ function Element(oToile) {
     ///////////////// FUNCTIONS
 
     this.draw = function () {
-        this.oToile.drawCarre(this.oPosition.iX, this.oPosition.iY, this.iWidth, this.iHeight, this.sColor); //base 2
+        this.oToile.drawCarre(this.oPosition.iX - (this.iWidth/2), this.oPosition.iY - (this.iHeight/2), this.iWidth, this.iHeight, this.sColor); //base 2
     };
 
     this.distanceElement = function (elmt2) {

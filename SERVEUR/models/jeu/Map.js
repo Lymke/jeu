@@ -69,7 +69,12 @@ function Map() {
         };
         
         this.getPublicInfos = function(){
-             oDatas = {};
+            oDatas = {};
+            
+            //Map
+            oDatas.oMap = {};
+            oDatas.oMap.iWidth = this.iWidth;
+            oDatas.oMap.iHeight = this.iHeight;
             
             //Route
             oDatas.oRoute = this.oRoute;
@@ -185,6 +190,13 @@ this.verifyCollisionsPersonnage = function(oPersonnage,oNewPosition){
             oConfigMap = require('./../../datas/maps/' + sName + '.json');
             this.oListOfPlayers = new ListOfPlayers();
             
+            //Map
+            this.sName = oConfigMap.sName;
+            this.iWidth = oConfigMap.iWidth;
+            this.iHeight = oConfigMap.iHeight;
+            this.iMinPlayers = oConfigMap.iMinPlayers;
+            this.iMaxPlayers = oConfigMap.iMaxPlayers;
+
             //Bases
             this.oBlueSideBase = new Base().init(oConfigMap.oBlueSideBase).setName('blue');                           
             this.oRedSideBase = new Base().init(oConfigMap.oRedSideBase).setName('red');

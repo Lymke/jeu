@@ -7,18 +7,58 @@
     </head> 
     <body>
         <h1>Bot</h1>
+        
+        <canvas id="mon_canvas" width="1000" height="500"> 
+            Texte alternatif pour les navigateurs ne supportant pas Canvas.
+        </canvas>
+        
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/Toile.js"></script>
+        <script src="js/Map.js"></script>
+        <script src="js/Element.js"></script>
+        <script src="js/Personnage.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/ListOfPlayers.js"></script>
+        <script src="js/Base.js"></script>
+        <script src="js/Convoi.js"></script>
         <script language="javascript">
+             ///////////////////// CANVAS 
+            var canvas = document.getElementById("mon_canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.onselectstart = function () {
+                return false;
+            }//prevent double-click
+            
+            //Game
+            var oToile = new Toile(canvas, ctx);
+            var oMap = new Map(oToile).setFps(60);
+            var bPause = 0;
+
+            //Animate
+            function animate()
+            {   oMap.animate();
+                if(bPause == 0){
+                    setTimeout(animate, 1000 / oMap.iFps);
+                }
+            }
+            
             var socket = io.connect('http://localhost:8080');
             socket.emit('player-add', {sLogin:'P-body'});
             
             socket.on('game-init', function (oDatas) {
               console.log('game-init',oDatas);
               //oDatas permit to create the map by drawing bases, players, convoi, route...
+              //The map
+              oMap.init(oDatas);//Decors, bases, convoi, route....
+
+              //Draw the game
+              oMap.draw();
             });
 
             socket.on('game-start', function () {
                 console.log('game-start');
+                animate();
             });
             
             socket.on('game-playermove', function (oDatasPlayer) {
