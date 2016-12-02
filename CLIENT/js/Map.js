@@ -104,16 +104,30 @@ function Map(oToile){
 //////////////////////////////// ANIMATE (move, click...)   
     
     this.animatePlayers = function(){
-        for(p in this.oListOfPlayers.aPlayers){
-            this.oListOfPlayers.aPlayers[p].oPersonnage.move();
-        }
-        //this.oMe.oPersonnage.move(this.iFps);
-        this.oMe.oPersonnage.move();
-    };
+            for(p in this.oListOfPlayers.aPlayers){
+                
+                var oNewPosition = this.oListOfPlayers.aPlayers[p].oPersonnage.calcPositionMove();
+                                
+                if(    !this.oListOfPlayers.aPlayers[p].oPersonnage.bStop 
+                    && !this.verifyCollisionsPersonnage(this.oListOfPlayers.aPlayers[p].oPersonnage,oNewPosition)){
+                    //the personnage is not in stop or in collision if he goes at this point
+                    this.oListOfPlayers.aPlayers[p].oPersonnage.move(oNewPosition);
+                }else{
+                }
+
+            } 
+        };
+    
+    this.verifyCollisionsPersonnage = function(oPersonnage,oNewPosition){
+    
+        //wtih the convoi
+       
+        return false;
+    }
     
     this.animate = function(){
         this.animatePlayers();
-        this.oConvoi.move();
+        //this.oConvoi.move();
         this.draw();
     };
     
@@ -124,7 +138,6 @@ function Map(oToile){
     };
     
     this.playerMove = function(oDatasPlayer){
-        console.log()
         for(p in this.oListOfPlayers.aPlayers){
             if( this.oListOfPlayers.aPlayers[p].iId == oDatasPlayer.iId){
                 this.oListOfPlayers.aPlayers[p].oPersonnage.moveToDatasElement(oDatasPlayer.oPersonnage);

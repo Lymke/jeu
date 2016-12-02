@@ -58,8 +58,9 @@ module.exports.controller = function (app) {
         });
         
         socket.on('game-moveto', function (oCoords){
+            oCoords.iX = parseInt(oCoords.iX);
+            oCoords.iY = parseInt(oCoords.iY);
             oPlayer = oMap.moveTo(socket.conn.id, oCoords);
-            
             socket.emit('game-memove', oPlayer.getPublicInfos());
             socket.broadcast.emit('game-playermove', oPlayer.getPublicInfos());
         });

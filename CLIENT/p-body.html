@@ -63,6 +63,9 @@
             
             socket.on('game-playermove', function (oDatasPlayer) {
                 console.log('game-playermove',oDatasPlayer);
+                if(oMap.oMe != undefined){
+                    oMap.playerMove(oDatasPlayer);
+                }
             });
             
             

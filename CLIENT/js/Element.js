@@ -1,8 +1,11 @@
 function Element(oToile) {
 
     this.oToile = oToile;
-    this.oPosition = {};//type Coordinates
-    this.oDestination = {iX: null, iY: null};//type Coordinates
+    this.oPosition = {}; //type Coordinates
+    this.oDestination = {
+        iX: null,
+        iY: null
+    }; //type Coordinates
     this.iWidth;
     this.iHeight;
     this.sColor;
@@ -45,7 +48,7 @@ function Element(oToile) {
     ///////////////// FUNCTIONS
 
     this.draw = function () {
-        this.oToile.drawCarre(this.oPosition.iX - (this.iWidth/2), this.oPosition.iY - (this.iHeight/2), this.iWidth, this.iHeight, this.sColor); //base 2
+        this.oToile.drawCarre(this.oPosition.iX - (this.iWidth / 2), this.oPosition.iY - (this.iHeight / 2), this.iWidth, this.iHeight, this.sColor); //base 2
     };
 
     this.distanceElement = function (elmt2) {
@@ -77,30 +80,40 @@ function Element(oToile) {
         this.oStartMovePosition = oDatasElement.oStartMovePosition;
     };
 
+
+    
     /**
-     * Set the new position of the element
+     * Return the new position of the element after his move
      */
-    this.move = function () {
-        if (!this.bStop) {
+    this.calcPositionMove = function () {
             if (this.oDestination.iX == null) {
-                //there is no destination or position setted, we return this
-                return this;
+                //there is no destination or position setted, we return the actual position
+                return this.oPosition;
             }
-
-            var iDistance = this.distanceCoord(this.oDestination);
-            if (this.iLastDistance != null && iDistance > this.iLastDistance) {
-                //The element is arived at destination
-                this.iLastDistance = null;
-                this.oPosition = this.oDestination;
-                this.oDestination = {iX: null, iY: null};
-
-            } else {
-                //Calc the new position of the element
-                this.iLastDistance = iDistance;
-                iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
-                this.oPosition = calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
+            
+            //Calc the new theoric position
+            iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
+            oNewPosition = calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
+            
+            //if the distance between startMove and destination is greater than startPosition and theoric, that seems the element is arrived
+            if(distanceCoordonnees(this.oStartMovePosition,oNewPosition) > distanceCoordonnees(this.oStartMovePosition,this.oDestination)){
+                return this.oDestination;
+            }else{
+                return oNewPosition;
             }
+    };
+
+    /**
+     * 
+     * @param {type} oPosition
+     * @returns {undefined}
+     */
+    this.move = function(oPosition){
+        this.oPosition = oPosition;
+        
+        if(oPosition.iX == this.oDestination.iX  && oPosition.iY == this.oDestination.iY ){
+            //the element is arived
+            this.oDestination = { iX : null, iY : null};
         }
-        return this;
     };
 }

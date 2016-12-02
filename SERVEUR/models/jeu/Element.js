@@ -67,7 +67,7 @@ function Element() {
         this.oDestination = oDestination;
         this.iAngle = Distance.calcAngle( this.oPosition, this.oDestination);
         this.iStartMoveTimestamp = new Date().getTime();
-        this.oStartMovePosition = this.oPosition;
+        this.oStartMovePosition = {iX : this.oPosition.iX, iY : this.oPosition.iY};
         return this;
         
     };
@@ -76,26 +76,21 @@ function Element() {
      * Return the new position of the element after his move
      */
     this.calcPositionMove = function () {
-        if(!this.bStop){
             if (this.oDestination.iX == null) {
-                //there is no destination or position setted, we return this
+                //there is no destination or position setted, we return the actual position
                 return this.oPosition;
             }
-
-            var iDistance = this.distanceCoord(this.oDestination);
             
-            if (iDistance < this.fSpeed) {
-                //The element is arived at destination
-                oPositionRes = this.oDestination;
-
-            } else {
-                //Calc the new position of the element
-                this.iLastDistance = iDistance;
-                iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
-                oPositionRes = Distance.calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
+            //Calc the new theoric position
+            iTpsFromStartMove = new Date().getTime() - this.iStartMoveTimestamp;
+            var oNewPosition = Distance.calcDeplacement((iTpsFromStartMove / 1000) * this.fSpeed, this.oStartMovePosition, this.iAngle);
+            
+            //if the distance between startMove and destination is greater than startPosition and theoric, that seems the element is arrived
+            if(Distance.distanceCoordonnees(this.oStartMovePosition,oNewPosition) > Distance.distanceCoordonnees(this.oStartMovePosition,this.oDestination)){
+                return this.oDestination;
+            }else{
+                return oNewPosition;
             }
-        }
-        return oPositionRes;
     };
     
     /**
@@ -105,10 +100,10 @@ function Element() {
      */
     this.move = function(oPosition){
         this.oPosition = oPosition;
-        this.oStartMovePosition = oPosition;
-        this.iStartMoveTimestamp = new Date().getTime();
-        if(oPosition.iX == this.oDestination.iX  || oPosition.iY == this.oDestination.iY ){
-            this.oDestination = {iX: null, iY: null};
+        
+        if(oPosition.iX == this.oDestination.iX  && oPosition.iY == this.oDestination.iY ){
+            //the element is arived
+            this.oDestination = { iX : null, iY : null};
         }
     };
 

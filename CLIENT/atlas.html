@@ -9,7 +9,9 @@
     <body>
         <h1>Atlas</h1>
         <button id="move">Move</button>
-        <button id="moveX575Y340">(575,340)</button>
+        <button id="back">back</button>
+        <button id="moveTo">Move to</button> iX : <input type="text" id="iX" placeholder="20"> iY : <input type="text" id="iY" placeholder="30">
+
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script language="javascript">
             var socket = io.connect('http://localhost:8080');
@@ -31,8 +33,11 @@
             $('#move').click(function(){
                 socket.emit('game-moveto', {iX : 100, iY : 50});
             });
-            $('#moveX575Y340').click(function(){
-                socket.emit('game-moveto', {iX : 120, iY : 60});
+            $('#back').click(function(){
+                socket.emit('game-moveto', {iX : 20, iY : 30});
+            });
+            $('#moveTo').click(function(){
+                socket.emit('game-moveto', {iX : $('#iX').val(), iY : $('#iY').val()});
             });
         </script>
     </body>
